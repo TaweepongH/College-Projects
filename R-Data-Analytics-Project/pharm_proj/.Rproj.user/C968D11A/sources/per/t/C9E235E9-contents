@@ -1,0 +1,100 @@
+---
+title: "Pharmaceutical Kmeans"
+author: "Sam"
+date: '2022-05-19'
+output: html_document
+---
+#STEP 1: READ THE DATA
+```{r}
+df <- read.csv("Pharmaceuticals.csv")
+head(df)
+```
+##extract numeric columns
+```{r}
+df1 <- df[,c(3:11)]
+head(df1)
+```
+###standardize the data (use scale() function)
+```{r}
+df_scaled <- scale(df1)
+head(df_scaled)
+```
+
+
+#STEP 2: INSTALL AND LOAD THE NECESSAYR PACKAGES
+##Install NBClust & factoextra
+```{r}
+install.packages('NbClust')
+install.packages('factoextra')
+library(NbClust)
+library(factoextra)
+```
+#STEP 3: DETEREMINE THE NUMBER OF CLUSTERS
+##3.1 USING ELBOW METHOD (SCREE PLOT)
+```{r}
+fviz_nbclust(df_scaled,kmeans, method="wss")
+```
+Based on the elbow method, we infer that there are 3 cluster. However, we need to confirm using comprehensive approach.
+
+##3.2 Comprehensive approach
+##using the NbClust function
+```{r}
+res_nbclust <- NbClust(df_scaled,distance="euclidean",min.nc=2,max.nc=10,method="kmeans",index="all")
+```
+###visualize the results (hsitogram/frequencies)
+```{r}
+fviz_nbclust(res_nbclust)
+```
+#STEP 4: CONDUCT KMEANS ANALYSIS USING FINAL NUMBER OF CLUSTERS
+##USE keans function
+```{r}
+kmResult <- kmeans(df_scaled,2)
+str(kmResult) #examine the structure of the result object
+```
+###generate a table of cluster membership
+###use table() function
+```{r}
+table(kmResult$cluster)
+```
+###display cluster centers/means as a df
+```{r}
+df_centers <- data.frame(kmResult$centers)
+df_centers
+```
+
+###save result to csv file
+```{r}
+write.csv(df_centers,"df_centers1.csv")
+```
+
+##VALIDATE THE CLUSTER SOLUTION
+###load cluster package and do clusplot
+```{r}
+#library(cluster)
+clusplot(df_scaled,kmResult$cluster, main="2D Cluster Solution Representation",color=TRUE,shade=TRUE, lines=0, labels=0)
+```
+
+###silhouette coeffcient (use silhouette function)
+```{r}
+sil_out <- silhouette(kmResult$cluster,dist(df_scaled,method="euclidean"))
+```
+###plot silhouette results (use plot() function)
+```{r}
+plot(sil_out,main="Silhouette Plot from Kmeans Analysis", col=c("red","green"))
+```
+###append cluster membership to the original data file and save it
+```{r}
+clustered_df <-cbind(df,kmResult$cluster)
+write.csv(clustered_df,"clustered_df.csv")
+```
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,168 @@
+---
+title: "Clustering Project"
+author: "Taweepong Hirikul"
+date: '2022-06-09'
+output:
+  word_document: default
+  html_document: default
+---
+
+#STEP 1: load & process the data
+##1.1 Laod the data
+```{r}
+df <- read.delim("BC_Educ_Labour_Market_Performance.csv", header = TRUE, sep = ",")
+head(df)
+```
+##1.2 exclude text column
+```{r}
+df_sel <- df[,-c(1)]
+head(df_sel)
+```
+##1.3 download & library package
+```{r}
+install.packages("caret")
+```
+
+```{r}
+library(caret)
+```
+
+#STEP 2: Normalize/scale data using min-max normalization.
+```{r}
+#preproc <- preProcess(df,method = c("center", "scale"), rangeBounds = c(2:24))
+#preproc
+process <- preProcess(df_sel, method=c("range"))
+process
+df_scale <- predict(process, df_sel)
+df_scale
+```
+
+#STEP 3: use normalized data to perform cluster analysis using k-means method.
+##3.1 download package
+```{r}
+install.packages("factoextra")
+install.packages("NbClust")
+```
+##3.2 library package
+```{r}
+library(factoextra)
+library(NbClust)
+library(cluster)
+```
+##3.3 use NbClust
+```{r}
+res_nbclust <- NbClust(df_scale, distance = "euclidean", min.nc = 2, max.nc = 10, method = "kmeans", index = "all")
+fviz(res_nbclust)
+```
+#STEP 4: determining the appropriate number of clusters to use in the analysis.
+Determine for the number of clusters is 3
+```{r}
+fviz_nbclust(df_scale,kmeans, method="wss")
+```
+
+
+#STEP 5: Perform k-means clustering using the number of clusters you obtained from step 3 above.
+```{r}
+set.seed(45)
+km_res <- kmeans(df_scale, 3, nstart = 50)
+print(km_res)
+str(km_res) #examine the structure of the result object
+
+```
+
+#STEP 6: Validate clustering results using appropriate techniques.
+```{r}
+
+clusplot(df_scale,km_res$cluster, main="2D Cluster Solution Representation",color=TRUE,shade=TRUE, lines=0, labels=0)
+```
+###silhouette coeffcient (use silhouette function)
+```{r}
+sil_out <- silhouette(km_res$cluster,dist(df_scale,method="euclidean"))
+```
+
+###plot silhouette results (use plot() function)
+```{r}
+plot(sil_out,main="Silhouette Plot from Kmeans Analysis", col=c("red","green"))
+```
+
+#STEP 7: Obtain a summary table of the number of observations assigned to each cluster
+
+###generate a table of cluster membership
+###use table() function
+```{r}
+table(km_res$cluster)
+```
+###display cluster centers/means as a df
+```{r}
+df_centers <- data.frame(km_res$centers)
+df_centers
+```
+### transpose cluster centers table
+```{r}
+df_centers1 <- t(df_centers)
+df_centers1
+```
+
+##Culster centers using the original data
+```{r}
+clust_cent_orig <- aggregate(df_sel, list(cluster=km_res$cluster), mean)
+clust_cent_orig1 <- t(clust_cent_orig)
+clust_cent_orig1
+
+```
+
+#STEP 8: Repeat the analysis using hierarchical clustering technique and generate the dendogram.
+
+```{r}
+dmax <- dist(df_sel, method = "euclidean")
+h_hclust <- hclust(dmax, method = "ward.D")
+plot(h_hclust, cex=0.5,hang = -1, main = "Dendogram from Hclust Algorithm")
+```
+
+```{r}
+fviz_dend(h_hclust,k=3,color_labels_by_k = TRUE, cex = 0.5)
+```
+
+#STEP 9: Does the rule-of-thumb of determining the number of clusters using the dendogram confirm the number of clusters obtained from k-means method?
+
+YES, The dendogram is confirm that the number of cluster from k-means method is 3!!
+
+#STEP 10: Using the number of clusters determined from k-means method, cut the dendogram/tree. As you did in step 7 above.
+```{r}
+dmax <- dist(df_sel, method = "euclidean")
+h_hclust <- hclust(dmax, method = "ward.D")
+#plot(h_hclust, cex=0.5,hang = -1, main = "Dendogram from Hclust Algorithm")
+fviz_dend(h_hclust,k=3,color_labels_by_k = TRUE, cex = 0.5)
+```
+##cut the dendogram (use cutree function)
+
+```{r}
+df_cut <- cutree(h_hclust,k=3)
+table(df_cut)
+```
+
+##generate cluster centroids (means) table (use aggregate function)
+
+```{r}
+df_center <- aggregate(df_sel,list(cluster=df_cut),mean)
+df_center
+```
+##transpose the clust_centers (use t function)
+
+```{r}
+df_center1 <- t(df_center)
+df_center1
+```
+
+#STEP 11: Append cluster assignment to the original data file you imported for analysis and save the output in each as a CSV file.
+##Append cluster membershilp to the original dataset
+```{r}
+df$clust_mem <- df_cut
+df
+```
+##Save the output to CSV
+```{r}
+write.csv(df,"df_with_cluster_mem.csv")
+```
+
+

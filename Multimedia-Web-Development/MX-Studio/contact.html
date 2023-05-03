@@ -1,0 +1,141 @@
+<!--
+Name: Taweepong Hirikul
+StudentID: 300356615
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Contact Us</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body onload="prefillForm()">
+		<header class="header">
+			<div class="main_nav flexWrapper">
+				<div class="main_nav_logo">
+					<a href="index.html" class="logo"><img src="images/logo.jpg" id="logo" alt="logo image"></a>
+				</div>
+				<div class="main_nav_menu">
+					<nav>
+						<a href="index.html">Home</a>
+						<a href="services.html">Services</a>
+						<a href="portfolio.html">Portfolio</a>
+						<a class="active" href="contact.html">Contact Us</a>
+					</nav>
+				</div>
+			</div>
+		</header>
+		
+		<section id="header-section" class="header-section">
+			<div class="container">
+				  <div class="text-center">
+					<div class="hero-text">
+						<h1>Contact Us</h1>
+						<p>We are provided the great 24/7 services. Please contact us below.</p>
+						<a href="contact.html" class="link-contact-btn">Contact us</a>		
+					</div>
+				  </div>	
+			</div>
+		</section>
+		
+		<section id="contact-section" class="section-padding">
+			<div class="container">
+				<div class="flexWrapper">
+					<div class="contact-content text-center">
+						<h1 >Contact Information</h1>
+						<div class="contact-detail">
+							<p><span class="text-bold">Address:</span> 700 Royal Ave, <br>New Westminster, BC V3M 5Z5</p>
+							<p><span class="text-bold">Email:</span> hirikult@studentdouglascollege.ca</p>
+							<p><span class="text-bold">Tel:</span> 236-989-9348</p>
+						</div>
+						<br />
+						<div class="contact-detail">
+							<p><span class="text-bold">Office hour:</span> Monday - Friday</p>
+							<p><span class="text-bold">Time:</span> 9.00 - 18.00</p>
+						</div>
+						<br />
+						<div class="contact-detail">
+							<p><span class="text-bold">Support Time:</span> Everyday 24 hours</p>
+						</div>
+					</div>
+					<div class="contact-content text-center">
+						<h1>How can we help you?</h1>
+						<p>For all inquiries. Please email us using this form below.</p>
+						<p id="err"></p>
+						<div id="div_form">
+							<form class="form" id="contactForm" name="contactForm" method="post" action="return false;">
+							<div class="contactform-group">
+								<input type="text" name="txtName" id="txtName" placeholder="Name">
+							</div>
+							<div class="contactform-group">
+								<input type="text" name="txtEmail" id="txtEmail" placeholder="Email">
+							</div>
+							<div class="contactform-group col-md-12">
+								<input type="text" name="txtSubject" id="txtSubject" placeholder="Subject">
+							</div>
+							<div class="contactform-group col-md-12">
+								<textarea rows="6" name="txtMessage" id="txtMessage" placeholder="Your Message"></textarea>
+							</div>
+							<div class="col-md-12 text-center">
+								<button type="submit" id="btn_submit" title="Submit Your Message!">Send Message</button>
+							</div>
+						</form>
+						</div>
+						<div id="div_thankyou">
+							<h1>Thank you for contact us. <br><br>We will response you soon.</h1>
+						</div>
+					</div>
+					<div class="contact-content contact-map text-center">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2606.8353425512732!2d-122.91497258446557!3d49.20368307932291!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5485d871f5ee4dc9%3A0xf3a710065f3a2f3f!2sDouglas%20College%20New%20Westminster%20Campus!5e0!3m2!1sth!2sca!4v1668403823340!5m2!1sth!2sca" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+					</div>
+					<div class="contact-vdo contact-content text-center">
+						<div class="video-title">
+							<h1>Know more about me</h1>
+						</div>
+						<video src="video/Douglas College International.mp4" preload="metadata" controls="controls" poster="images/douglas-college.png" loop></video>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<footer id="footer">
+			<div class="footer-flex">
+				<div class="footer-content">
+					<div class="footer-padding">
+						<div class="footer-logo text-center">
+							<img src="images/logo.jpg" alt="logo">
+						</div>
+						<div class="social_profile">
+							<ul>
+								<li><a href="https://www.facebook.com"><img class="social_img" src="images/fb.png" alt="facebook"/></a></li>
+								<li><a href="https://www.whatsapp.com"><img class="social_img" src="images/whatsapp.png" alt="whatsapp" /></a></li>
+								<li><a href="https://www.instagram.com"><img class="social_img" src="images/ig.jpg" alt="instragram"/></a></li>
+								<li><a href="https://www.youtube.com"><img class="social_img" src="images/yt.png" alt="youtube"/></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="footer-content">
+					<div class="footer-padding">
+						<h4>Discover Our Website</h4>
+						<ul class="footer-link">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="services.html">Services</a></li>
+							<li><a href="portfolio.html">Portfolio</a></li>
+							<li><a href="contact.html">Contact Us</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="footer-content">
+					<div class="footer-padding">
+					<p>Get a free estimate for a project</p>
+					<a href="contact.html?s=[Request] for The Quote" class="link-contact-btn">Request a free quote</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+		
+		
+		<script src="scripts/contact.js"></script>
+	</body>
+</html>
